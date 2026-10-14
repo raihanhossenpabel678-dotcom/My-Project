@@ -1,0 +1,6 @@
+{
+  "name": "FixLocal - Hyperlocal Service Finder & Bidding Platform",
+  "description": "High-fidelity hyperlocal service marketplace connecting homeowners with verified local plumbers, electricians, carpenters, and technicians with transparent real-time bidding.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

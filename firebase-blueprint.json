@@ -1,0 +1,129 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile for customer or service provider",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "format": "email", "maxLength": 120 },
+        "role": { "type": "string", "enum": ["customer", "provider"] },
+        "category": { "type": "string", "enum": ["Plumber", "Electrician", "Carpenter", "AC Technician"] },
+        "operatingArea": { "type": "string", "maxLength": 150 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "companyName": { "type": "string", "maxLength": 120 },
+        "rating": { "type": "number" },
+        "completedJobsCount": { "type": "number" },
+        "avatar": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "name", "email", "role"]
+    },
+    "Job": {
+      "title": "Job",
+      "description": "Service request posted by a customer",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string", "maxLength": 100 },
+        "customerAvatar": { "type": "string", "maxLength": 500 },
+        "customerPhone": { "type": "string", "maxLength": 30 },
+        "title": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "enum": ["Plumber", "Electrician", "Carpenter", "AC Technician"] },
+        "description": { "type": "string", "maxLength": 3000 },
+        "budget": { "type": "number" },
+        "location": { "type": "string", "maxLength": 200 },
+        "urgency": { "type": "string", "enum": ["Immediate (Today)", "Within 2-3 Days", "Flexible Schedule"] },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "enum": ["open", "hired", "scheduled", "in_progress", "completed"] },
+        "hiredBidId": { "type": "string", "maxLength": 100 },
+        "hiredProviderId": { "type": "string", "maxLength": 100 },
+        "hiredProviderName": { "type": "string", "maxLength": 100 },
+        "scheduledDate": { "type": "string", "maxLength": 50 },
+        "scheduledTimeSlot": { "type": "string", "maxLength": 50 },
+        "escrowStatus": { "type": "string", "enum": ["unfunded", "held", "released"] },
+        "escrowAmount": { "type": "number" },
+        "escrowFundedAt": { "type": "string", "maxLength": 50 },
+        "escrowReleasedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "customerId", "customerName", "title", "category", "description", "budget", "location", "status"]
+    },
+    "Bid": {
+      "title": "Bid",
+      "description": "Service quote and proposal submitted by a provider",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "jobId": { "type": "string" },
+        "providerId": { "type": "string" },
+        "providerName": { "type": "string", "maxLength": 100 },
+        "providerAvatar": { "type": "string", "maxLength": 500 },
+        "providerCategory": { "type": "string", "enum": ["Plumber", "Electrician", "Carpenter", "AC Technician"] },
+        "providerRating": { "type": "number" },
+        "providerCompletedJobs": { "type": "number" },
+        "providerPhone": { "type": "string", "maxLength": 30 },
+        "proposedPrice": { "type": "number" },
+        "estimatedTime": { "type": "string", "maxLength": 150 },
+        "pitch": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "enum": ["pending", "accepted", "declined"] }
+      },
+      "required": ["id", "jobId", "providerId", "providerName", "proposedPrice", "estimatedTime", "pitch", "status"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Direct chat message between customer and provider for a job",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "jobId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string", "maxLength": 100 },
+        "senderRole": { "type": "string", "enum": ["customer", "provider"] },
+        "text": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "jobId", "senderId", "senderName", "text"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Verified post-completion customer review and star rating",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "jobId": { "type": "string" },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string", "maxLength": 100 },
+        "providerId": { "type": "string" },
+        "rating": { "type": "number" },
+        "comment": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "jobId", "customerId", "providerId", "rating", "comment"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Registered customer and provider profiles"
+    },
+    "/jobs/{jobId}": {
+      "schema": "Job",
+      "description": "Customer service job requests with lifecycle and escrow state"
+    },
+    "/bids/{bidId}": {
+      "schema": "Bid",
+      "description": "Provider bids for jobs"
+    },
+    "/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Real-time communication messages tied to jobs"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Verified customer reviews and ratings"
+    }
+  }
+}
